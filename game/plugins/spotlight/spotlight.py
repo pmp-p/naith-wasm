@@ -13,38 +13,38 @@
 # limitations under the License.
 
 
-from panda3d.core import VBase4
-from panda3d.core import Spotlight as PSpotLight
-from panda3d.core import PerspectiveLens
+from pandac.PandaModules import VBase4
+from pandac.PandaModules import Spotlight as PSpotLight
+from pandac.PandaModules import PerspectiveLens
+
 
 # XXX Name should be Spotlight (see panda manual) but for consistency, I'll leave it as is
 class SpotLight:
-  """Creates a simple spot light"""
-  def __init__(self,manager,xml):
-    self.light = PSpotLight('slight')
-    lens = PerspectiveLens()
-    self.light.setLens(lens)
-    self.lightNode = render.attachNewNode(self.light)
+    """Creates a simple spot light"""
 
-    self.reload(manager,xml)
+    def __init__(self, manager, xml):
+        self.light = PSpotLight("slight")
+        lens = PerspectiveLens()
+        self.light.setLens(lens)
+        self.lightNode = render.attachNewNode(self.light)
 
+        self.reload(manager, xml)
 
-  def reload(self,manager,xml):
-    color = xml.find('color')
-    if color!=None:
-      self.light.setColor(VBase4(float(color.get('r')), float(color.get('g')), float(color.get('b')), 1.0))
-    
-    pos = xml.find('pos')
-    if pos!=None:
-      self.lightNode.setPos(render, float(pos.get('x')), float(pos.get('y')), float(pos.get('z')))
-    
-    lookAt = xml.find('lookAt')
-    if lookAt!=None:
-      self.lightNode.lookAt(render, float(lookAt.get('x')), float(lookAt.get('y')), float(lookAt.get('z')))
+    def reload(self, manager, xml):
+        color = xml.find("color")
+        if color != None:
+            self.light.setColor(VBase4(float(color.get("r")), float(color.get("g")), float(color.get("b")), 1.0))
 
+        pos = xml.find("pos")
+        if pos != None:
+            self.lightNode.setPos(render, float(pos.get("x")), float(pos.get("y")), float(pos.get("z")))
 
-  def start(self):
-    render.setLight(self.lightNode)
+        lookAt = xml.find("lookAt")
+        if lookAt != None:
+            self.lightNode.lookAt(render, float(lookAt.get("x")), float(lookAt.get("y")), float(lookAt.get("z")))
 
-  def stop(self):
-    render.clearLight(self.lightNode)
+    def start(self):
+        render.setLight(self.lightNode)
+
+    def stop(self):
+        render.clearLight(self.lightNode)

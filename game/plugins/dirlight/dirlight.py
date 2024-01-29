@@ -14,57 +14,65 @@
 # limitations under the License.
 
 
-from panda3d.core import NodePath, VBase4, BitMask32
-from panda3d.core import DirectionalLight as PDirectionalLight
+from pandac.PandaModules import NodePath
+from pandac.PandaModules import VBase4
+from pandac.PandaModules import BitMask32
+from pandac.PandaModules import DirectionalLight as PDirectionalLight
+
 
 class DirLight:
-  """Creates a simple directional light"""
-  def __init__(self,manager,xml):
-    self.light = PDirectionalLight('dlight')
-    self.lightNode = NodePath(self.light)
-    self.lightNode.setCompass()
-    if hasattr(self.lightNode.node(), "setCameraMask"):
-      self.lightNode.node().setCameraMask(BitMask32.bit(3))
+    """Creates a simple directional light"""
 
-    self.reload(manager,xml)
+    def __init__(self, manager, xml):
+        self.light = PDirectionalLight("dlight")
+        self.lightNode = NodePath(self.light)
+        self.lightNode.setCompass()
+        if hasattr(self.lightNode.node(), "setCameraMask"):
+            self.lightNode.node().setCameraMask(BitMask32.bit(3))
 
+        self.reload(manager, xml)
 
-  def reload(self,manager,xml):
-    color = xml.find('color')
-    if color!=None:
-      self.light.setColor(VBase4(float(color.get('r')), float(color.get('g')), float(color.get('b')), 1.0))
+    def reload(self, manager, xml):
+        color = xml.find("color")
+        if color != None:
+            self.light.setColor(VBase4(float(color.get("r")), float(color.get("g")), float(color.get("b")), 1.0))
 
-    pos = xml.find('pos')
-    if pos!=None:
-      self.lightNode.setPos(float(pos.get('x')), float(pos.get('y')), float(pos.get('z')))
-    else:
-      self.lightNode.setPos(0, 0, 0)
+        pos = xml.find("pos")
+        if pos != None:
+            self.lightNode.setPos(float(pos.get("x")), float(pos.get("y")), float(pos.get("z")))
+        else:
+            self.lightNode.setPos(0, 0, 0)
 
-    lookAt = xml.find('lookAt')
-    if lookAt!=None:
-      self.lightNode.lookAt(float(lookAt.get('x')), float(lookAt.get('y')), float(lookAt.get('z')))
+        lookAt = xml.find("lookAt")
+        if lookAt != None:
+            self.lightNode.lookAt(float(lookAt.get("x")), float(lookAt.get("y")), float(lookAt.get("z")))
 
-    lens = xml.find('lens')
-    if lens!=None and hasattr(self.lightNode.node(), 'getLens'):
-      if bool(int(lens.get('auto'))):
-        self.lightNode.reparentTo(base.camera)
-      else:
-        self.lightNode.reparentTo(render)
-      lobj = self.lightNode.node().getLens()
-      lobj.setNearFar(float(lens.get('near', 1.0)), float(lens.get('far', 100000.0)))
-      lobj.setFilmSize(float(lens.get('width', 1.0)), float(lens.get('height', 1.0)))
-      lobj.setFilmOffset(float(lens.get('x', 0.0)), float(lens.get('y', 0.0)))
+        lens = xml.find("lens")
+        if lens != None and hasattr(self.lightNode.node(), "getLens"):
+            if bool(int(lens.get("auto"))):
+                self.lightNode.reparentTo(base.camera)
+            else:
+                self.lightNode.reparentTo(render)
+            lobj = self.lightNode.node().getLens()
 
-    if hasattr(self.lightNode.node(), 'setShadowCaster'):
-      shadows = xml.find('shadows')
-      if shadows!=None:
-        self.lightNode.node().setShadowCaster(True, int(shadows.get('width', 512)), int(shadows.get('height', 512)), int(shadows.get('sort', -10)))
-        #self.lightNode.node().setPushBias(float(shadows.get('bias', 0.5)))
-      else:
-        self.lightNode.node().setShadowCaster(False)
+            lobj.setNearFar(float(lens.get("near", 1.0)), float(lens.get("far", 100000.0)))
 
-  def start(self):
-    render.setLight(self.lightNode)
+            lobj.setFilmSize(float(lens.get("width", 1.0)), float(lens.get("height", 1.0)))
 
-  def stop(self):
-    render.clearLight(self.lightNode)
+            lobj.setFilmOffset(float(lens.get("x", 0.0)), float(lens.get("y", 0.0)))
+
+        if hasattr(self.lightNode.node(), "setShadowCaster"):
+            shadows = xml.find("shadows")
+            if shadows != None:
+                self.lightNode.node().setShadowCaster(
+                    True, int(shadows.get("width", 512)), int(shadows.get("height", 512)), int(shadows.get("sort", -10))
+                )
+                # self.lightNode.node().setPushBias(float(shadows.get('bias', 0.5)))
+            else:
+                self.lightNode.node().setShadowCaster(False)
+
+    def start(self):
+        render.setLight(self.lightNode)
+
+    def stop(self):
+        render.clearLight(self.lightNode)

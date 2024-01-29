@@ -13,25 +13,26 @@
 # limitations under the License.
 
 
-
 import sys
 from direct.showbase import DirectObject
 
 
 class FrameRate(DirectObject.DirectObject):
-  """Toggles displaying the framerate with F12."""
-  def __init__(self,manager,xml):
-    self.state = False
 
-  def toggle(self):
-      self.state = not self.state
-      base.setFrameRateMeter(self.state)
+    """Toggles displaying the framerate with F12."""
 
-  def start(self):
-    self.accept('f12',self.toggle)
+    def __init__(self, manager, xml):
+        self.state = False
 
-  def stop(self):
-    self.ignore('f12')
+    def toggle(self):
+        self.state = not self.state
+        base.setFrameRateMeter(self.state)
 
-  def reload(self,manager,xml):
-    pass
+    def start(self):
+        self.accept("f12", self.toggle)
+
+    def stop(self):
+        self.ignore("f12")
+
+    def reload(self, manager, xml):
+        pass

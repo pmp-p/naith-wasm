@@ -4,3 +4,4 @@ game/cache/
 naith.p3d
 *.p12
 *.pem
+/game/build

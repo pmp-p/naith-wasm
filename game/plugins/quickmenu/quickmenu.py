@@ -17,28 +17,30 @@ from direct.gui.DirectGui import *
 
 
 class QuickMenu:
-  """This creates a menu - nothing fancy - just a list of buttons, each of which invokes a transition to another config file."""
-  def __init__(self,manager,xml):
-    self.buttons = []
+    """This creates a menu - nothing fancy - just a list of buttons,
+    each of which invokes a transition to another config file."""
 
-    # Create the button objects...
-    yPos = 0.8
-    for but in xml.findall('button'):
-      button = DirectButton(text = but.get('text','-'),pos=(0.0,0.0,yPos),scale = .065)
-      yPos -= 0.1
-      button['command'] = manager.transition
-      button['extraArgs'] = [but.get('target','')]
-      button.hide()
-      self.buttons.append(button)
+    def __init__(self, manager, xml):
+        self.buttons = []
 
-  def start(self):
-    for button in self.buttons:
-      button.show()
+        # Create the button objects...
+        yPos = 0.8
+        for but in xml.findall("button"):
+            button = DirectButton(text=but.get("text", "-"), pos=(0.0, 0.0, yPos), scale=0.065)
+            yPos -= 0.1
+            button["command"] = manager.transition
+            button["extraArgs"] = [but.get("target", "")]
+            button.hide()
+            self.buttons.append(button)
 
-  def stop(self):
-    for button in self.buttons:
-      button.hide()
+    def start(self):
+        for button in self.buttons:
+            button.show()
 
-  def destroy(self):
-    for button in self.buttons:
-      button.destroy()
+    def stop(self):
+        for button in self.buttons:
+            button.hide()
+
+    def destroy(self):
+        for button in self.buttons:
+            button.destroy()

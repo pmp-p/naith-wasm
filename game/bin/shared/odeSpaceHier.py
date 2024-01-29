@@ -13,12 +13,17 @@
 # limitations under the License.
 
 
-from panda3d.core import *
-from panda3d.ode import *
+from pandac.PandaModules import *
 
 
 def eggToOde(np,surfaceType): # ,depth = 0
-  """Given a node path, usually from an egg that has been octreed, this constructs the same structure in ode, using a space for each node with tri-meshes within. Implimented as a generator so it doesn't screw with the framerate; final yield will return the root geom, or None if there was nothing to collide with. (This geom will probably be a space, but only probably.)"""
+  """Given a node path, usually from an egg that has been octreed,
+     this constructs the same structure in ode, using a space for each node
+     with tri-meshes within. Implimented as a generator so it doesn't screw
+     with the framerate; final yield will return the root geom, or None if
+     there was nothing to collide with.
+
+     (This geom will probably be a space, but only probably.)"""
   output = []
   np.flattenLight()
 
@@ -26,18 +31,20 @@ def eggToOde(np,surfaceType): # ,depth = 0
   if np.node().isGeomNode(): # np.node().getClassType()==CollisionNode.getClassType()
     tmd = OdeTriMeshData(np,True)
     tmg = OdeTriMeshGeom(tmd)
-    
+
     nt = np.getNetTransform()
     tmg.setPosition(nt.getPos())
     tmg.setQuaternion(nt.getQuat())
-    
+
     output.append(tmg)
     #print ('|'*depth) + 'geom, ' + str(np.node().getClassType()) + ', ' + str(tmg.getNumTriangles())
   else:
     #print ('|'*depth) + 'notgeom, ' + str(np.node().getClassType())
     # Check the children for useful data...
     children = np.getChildren()
-    for child in children:
+    for i in range(children.getNumPaths()):
+      child = children[i]
+
       for r in eggToOde(child,surfaceType): # ,depth+1
         yield None
         geom = r

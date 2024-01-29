@@ -17,20 +17,22 @@
 
 import math
 
-from panda3d.core import *
-from panda3d.ode import *
+from pandac.PandaModules import *
 
 
 
 def nearestHit(space,ray):
-  """Collides the given ray with the space provided by the ode module - returns (None,None,None) if it fails to hit anything or a tuple of (geom,position,normal) of the closest point that it does hit."""
+  """Collides the given ray with the space provided by
+     the ode module - returns (None,None,None) if it fails to hit
+     anything or a tuple of (geom,position,normal) of
+     the closest point that it does hit."""
   bestPos = None
   bestNorm = None
   bestGeom = None
   bestDepth = None
 
   cc = OdeUtil.collide(ray,OdeUtil.spaceToGeom(space))
-  for i in xrange(cc.getNumContacts()):
+  for i in range(cc.getNumContacts()):
     cg = cc.getContactGeom(i)
     depth = cg.getDepth()
     if bestDepth==None or bestDepth>depth:
@@ -42,11 +44,13 @@ def nearestHit(space,ray):
       bestDepth = depth
 
   return (bestGeom,bestPos,bestNorm)
-  
-  
+
+
 def collides(space,obj):
-  """Not really ray related, but similar to above. Tests if the given obj collides with anything in the given space - returns True if it does, False if it does not."""
-  for i in xrange(space.getNumGeoms()):
+  """Not really ray related, but similar to above.
+     Tests if the given obj collides with anything in the given
+     space - returns True if it does, False if it does not."""
+  for i in range(space.getNumGeoms()):
     geom = space.getGeom(i)
 
     testA = (geom.getCollideBits() & obj.getCollideBits()).isZero()

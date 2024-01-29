@@ -13,58 +13,58 @@
 # limitations under the License.
 
 
-from panda3d.core import LightRampAttrib
+from pandac.PandaModules import LightRampAttrib
 from direct.filter.CommonFilters import CommonFilters
 
+
 class Filters:
-  """Class handles postprocessing filters and effects"""
-  def __init__(self,manager,xml):
-    self.cf = CommonFilters(base.win,base.cam)
-    self.reload(manager,xml)
 
+    """Class handles postprocessing filters and effects"""
 
-  def reload(self,manager,xml):
-    hdr = xml.find('hdr')
-    if hdr!=None:
-      self.hdrtype = hdr.get('type')
-      assert self.hdrtype in ['0', '1', '2']
-    else:
-      self.hdrtype = None
+    def __init__(self, manager, xml):
+        self.cf = CommonFilters(base.win, base.cam)
+        self.reload(manager, xml)
 
-    self.perpixel =  xml.find('perpixel')!=None
+    def reload(self, manager, xml):
+        hdr = xml.find("hdr")
+        if hdr != None:
+            self.hdrtype = hdr.get("type")
+            assert self.hdrtype in ["0", "1", "2"]
+        else:
+            self.hdrtype = None
 
-    bloom = xml.find('bloom')
-    if bloom!=None:
-      self.bloomSize = bloom.get('size', 'medium')
-    else:
-      self.bloomSize = None
+        self.perpixel = xml.find("perpixel") != None
 
-    self.showbuffers = xml.find('showbuffers')!=None
+        bloom = xml.find("bloom")
+        if bloom != None:
+            self.bloomSize = bloom.get("size", "medium")
+        else:
+            self.bloomSize = None
 
+        self.showbuffers = xml.find("showbuffers") != None
 
-  def start(self):
-    if self.hdrtype!=None:
-      render.setAttrib(getattr(LightRampAttrib, "makeHdr" + self.hdrtype)())
+    def start(self):
+        if self.hdrtype != None:
+            render.setAttrib(getattr(LightRampAttrib, "makeHdr" + self.hdrtype)())
 
-    if self.perpixel:
-      render.setShaderAuto()
+        if self.perpixel:
+            render.setShaderAuto()
 
-    if self.bloomSize!=None:
-      self.cf.setBloom(size=self.bloomSize)
+        if self.bloomSize != None:
+            self.cf.setBloom(size=self.bloomSize)
 
-    if self.showbuffers:
-      base.bufferViewer.toggleEnable()
+        if self.showbuffers:
+            base.bufferViewer.toggleEnable()
 
+    def stop(self):
+        if self.hdrtype != None:
+            render.clearAttrib(LightRampAttrib.getClassType())
 
-  def stop(self):
-    if self.hdrtype!=None:
-      render.clearAttrib(LightRampAttrib.getClassType())
+        if self.perpixel:
+            render.setShaderOff()
 
-    if self.perpixel:
-      render.setShaderOff()
-    
-    if self.bloomSize!=None:
-      self.cf.delBloom()
-    
-    if self.showbuffers:
-      base.bufferViewer.toggleEnable()
+        if self.bloomSize != None:
+            self.cf.delBloom()
+
+        if self.showbuffers:
+            base.bufferViewer.toggleEnable()

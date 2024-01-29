@@ -18,40 +18,42 @@ from direct.actor import Actor
 
 
 class Loading:
-  """Does a loading screen - renders some stuff whilst a transition is happenning."""
-  def __init__(self,manager,xml):
-    self.node = Actor.Actor('data/misc/loading')
-    self.node.reparentTo(base.render)
-    self.node.setShaderAuto()
-    self.node.hide()
 
-    self.light = PointLight('plight')
-    self.light.setColor(VBase4(1.0, 1.0, 1.0, 1.0))
-    self.lightNode = self.node.attachNewNode(self.light)
-    self.lightNode.setPos(0.0, 0.0, 1.5)
-    self.node.setLight(self.lightNode)
+    """Does a loading screen - renders some stuff whilst a transition is happenning."""
 
-    self.task = None
+    def __init__(self, manager, xml):
+        self.node = Actor.Actor("data/misc/loading")
+        self.node.reparentTo(base.render)
+        self.node.setShaderAuto()
+        self.node.hide()
 
-    #self.stop()
+        self.light = PointLight("plight")
+        self.light.setColor(VBase4(1.0, 1.0, 1.0, 1.0))
+        self.lightNode = self.node.attachNewNode(self.light)
+        self.lightNode.setPos(0.0, 0.0, 1.5)
+        self.node.setLight(self.lightNode)
 
-  def reload(self,manager,xml):
-    pass
+        self.task = None
 
-  def start(self):
-    self.node.hide()
-    self.node.stop()
+        # self.stop()
 
-    if self.task!=None:
-      taskMgr.remove(self.task)
-      self.task = None
+    def reload(self, manager, xml):
+        pass
 
-  def stop(self):
-    self.node.show()
-    self.node.loop('slide')
-    self.task = taskMgr.add(self.camPos, 'LoadingCamera')
+    def start(self):
+        self.node.hide()
+        self.node.stop()
 
-  def camPos(self,task):
-    base.camera.setPos(0.0,0.0,20.0)
-    base.camera.lookAt(0.0,0.0,0.0)
-    return task.cont
+        if self.task != None:
+            taskMgr.remove(self.task)
+            self.task = None
+
+    def stop(self):
+        self.node.show()
+        self.node.loop("slide")
+        self.task = taskMgr.add(self.camPos, "LoadingCamera")
+
+    def camPos(self, task):
+        base.camera.setPos(0.0, 0.0, 20.0)
+        base.camera.lookAt(0.0, 0.0, 0.0)
+        return task.cont

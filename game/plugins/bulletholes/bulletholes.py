@@ -12,54 +12,64 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from panda3d.core import CardMaker, Texture, ModelRoot, ColorBlendAttrib, TransparencyAttrib, DecalEffect, NodePath, Point2, Point3, BitMask32
+from pandac.PandaModules import CardMaker
+from pandac.PandaModules import Texture
+from pandac.PandaModules import ModelRoot
+from pandac.PandaModules import ColorBlendAttrib
+from pandac.PandaModules import TransparencyAttrib
+from pandac.PandaModules import DecalEffect
+from pandac.PandaModules import NodePath
+from pandac.PandaModules import Point2, Point3
+from pandac.PandaModules import BitMask32
+
 from random import random
 
 BULLETHOLE_SIZE = 0.05
 
+
 class BulletHoles:
-  """The name says it all."""
-  def __init__(self,manager,xml):
-    self.texture = loader.loadTexture('data/textures/bullet-hole.png')
-    self.texture.setMinfilter(Texture.FTLinearMipmapLinear)
-    self.container = render.attachNewNode(ModelRoot('bullet-holes'))
-    self.card = CardMaker('bullet-hole')
-    s = BULLETHOLE_SIZE * 0.5
-    self.card.setFrame(-s, s, -s, s)
-    self.card.setUvRange(Point2(0, 0), Point2(1, 1))
+    """The name says it all."""
 
-  def makeNew(self, pos, nor, parent = None):
-    """Makes a new bullet hole."""
-    if parent == None:
-      parent = self.container
-    else:
-      # Add a subnode to the parent, if it's not already there
-      child = parent.find('bullet-holes')
-      if child.isEmpty():
-        parent = parent.attachNewNode('bullet-holes')
-      else:
-        parent = child
-    newhole = NodePath(self.card.generate())
-    newhole.reparentTo(parent)
-    newhole.lookAt(render, Point3(newhole.getPos(render) - nor))
-    newhole.setR(newhole, random() * 360.0)
-    newhole.setPos(render, pos)
-    # Offset it a little to avoid z-fighting
-    # Increase this value if you still see it.
-    newhole.setY(newhole, -.001 - random() * 0.01)
-    del newhole
-    # We don't want one batch per bullet hole, so flatten it.
-    # This could be made smarter to preserve culling, but
-    # I have yet to see a performance loss.
-    # The clearTexture() is a necessary hack.
-    parent.clearTexture()
-    parent.flattenStrong()
-    parent.setTexture(self.texture)
-    parent.setTransparency(TransparencyAttrib.MDual)
-    parent.setShaderOff(1)
-    parent.hide(BitMask32.bit(2)) # Invisible to volumetric lighting camera (speedup)
-    parent.hide(BitMask32.bit(3)) # Invisible to shadow cameras (speedup)
+    def __init__(self, manager, xml):
+        self.texture = loader.loadTexture("data/textures/bullet-hole.png")
+        self.texture.setMinfilter(Texture.FTLinearMipmapLinear)
+        self.container = render.attachNewNode(ModelRoot("bullet-holes"))
+        self.card = CardMaker("bullet-hole")
+        s = BULLETHOLE_SIZE * 0.5
+        self.card.setFrame(-s, s, -s, s)
+        self.card.setUvRange(Point2(0, 0), Point2(1, 1))
 
-  def destroy(self):
-    self.container.removeNode()
+    def makeNew(self, pos, nor, parent=None):
+        """Makes a new bullet hole."""
+        if parent == None:
+            parent = self.container
+        else:
+            # Add a subnode to the parent, if it's not already there
+            child = parent.find("bullet-holes")
+            if child.isEmpty():
+                parent = parent.attachNewNode("bullet-holes")
+            else:
+                parent = child
+        newhole = NodePath(self.card.generate())
+        newhole.reparentTo(parent)
+        newhole.lookAt(render, Point3(newhole.getPos(render) - nor))
+        newhole.setR(newhole, random() * 360.0)
+        newhole.setPos(render, pos)
+        # Offset it a little to avoid z-fighting
+        # Increase this value if you still see it.
+        newhole.setY(newhole, -0.001 - random() * 0.01)
+        del newhole
+        # We don't want one batch per bullet hole, so flatten it.
+        # This could be made smarter to preserve culling, but
+        # I have yet to see a performance loss.
+        # The clearTexture() is a necessary hack.
+        parent.clearTexture()
+        parent.flattenStrong()
+        parent.setTexture(self.texture)
+        parent.setTransparency(TransparencyAttrib.MDual)
+        parent.setShaderOff(1)
+        parent.hide(BitMask32.bit(2))  # Invisible to volumetric lighting camera (speedup)
+        parent.hide(BitMask32.bit(3))  # Invisible to shadow cameras (speedup)
 
+    def destroy(self):
+        self.container.removeNode()
