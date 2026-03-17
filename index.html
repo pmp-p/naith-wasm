@@ -1,12 +1,12 @@
-<html lang="en-us"><script src="https://pygame-web.github.io/cdn/0.9.3/pythons.js" type=module id="site" data-python="python3.12" data-LINES=42 data-COLUMNS=132 data-os="vtx,snd,gui" async defer>#<!--
+<html lang="en-us"><script src="https://pygame-web.github.io/pygbag/0.0/pythons.js" type=module id="site" data-python="python3.13" data-LINES=42 data-COLUMNS=132 data-os="vtx,snd,gui" async defer>#<!--
 
 print("""
 Loading game from game.apk
-    Pygbag Version : 0.9.3
-    Template Version : 0.9.3
-    Python  : 3.12
-    CDN URL : https://pygame-web.github.io/cdn/0.9.3/
-    Screen  : 1280x720
+    Pygbag Version : 0.0.0
+    Template Version : 0.9.4
+    Python  : 3.13
+    CDN URL : https://pygame-web.github.io/pygbag/0.0/
+    Screen  : 990x540
     Title   : game
     Folder  : game
     Authors : pgw
@@ -153,12 +153,12 @@ config = {
     can_close : 0,
     archive : "game",
     gui_debug : 2,
-    cdn : "https://pygame-web.github.io/cdn/0.9.3/",
+    cdn : "https://pygame-web.github.io/pygbag/0.0/",
     autorun : 0,
-    PYBUILD : "3.12",
+    PYBUILD : "3.13",
     fb_ar   :  1.77,
-    fb_width : "1280",
-    fb_height : "720"
+    fb_width : "990",
+    fb_height : "540"
 }
 
 function show_infobox() {
@@ -278,13 +278,11 @@ function show_infobox() {
     <script>
 /*
         if (navigator.serviceWorker)
-            navigator.serviceWorker.register("https://pygame-web.github.io/cdn/0.9.3/pygbag0.9.3.js")
+            navigator.serviceWorker.register("https://pygame-web.github.io/pygbag/0.0/pygbag0.0.0.js")
         else
             console.warn("Service workers not supported")
 */
     </script>
-
-    <script src="https://pygame-web.github.io/cdn/0.9.3//browserfs.min.js"></script>
 
 </head>
 
@@ -307,8 +305,8 @@ height="1px"
     </canvas>
 
     <canvas class="emscripten" id="canvas3d"
-width="1280px"
-height="720px"
+width="990px"
+height="540px"
     oncontextmenu="event.preventDefault()" tabindex=1 hidden>
     </canvas>
 
@@ -354,7 +352,7 @@ frameborder="1"
                 mozallowfullscreen="true"
                 sandbox="allow-same-origin allow-top-navigation allow-scripts allow-pointer-lock"
                 allow="autoplay; fullscreen *; geolocation; microphone; camera; midi; monetization; xr-spatial-tracking; gamepad; gyroscope; accelerometer; xr; cross-origin-isolated"
-                src="https://pygame-web.github.io/cdn/0.9.3/empty.html"
+                src="https://pygame-web.github.io/pygbag/0.0/empty.html"
                 scrolling="yes">
             </iframe>
         </div>
