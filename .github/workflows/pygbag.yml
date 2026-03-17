@@ -12,7 +12,7 @@ jobs:
     - name: Checkout
       run: |
             python3 -m pip install --user git+https://github.com/pygame-web/pygbag
-            python3 -m pygbag --PYBUILD 3.13 --no_opt --ume_block 0 --build $GITHUB_WORKSPACE/game/main.py
+            python3 -m pygbag --PYBUILD 3.13 --git --no_opt --ume_block 0 --build $GITHUB_WORKSPACE/game/main.py
 
     - name : "Upload to GitHub pages"
       uses: JamesIves/github-pages-deploy-action@4.1.7
